@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+    </head>
+    <body>
+        <div class="first">${Request.ccc}</div>
+        <div style='line-height:100px;border:1px solid #D7D7D7;text-align: center;'>${Page.aa}</div>
+        <@data name='newslist' provider='test' method='test'>
+        <#list newslist as row>
+        <a href="${row.title}">${row.title}</a>
+        </#list>
+        </@data>
+    </body>
+</html>

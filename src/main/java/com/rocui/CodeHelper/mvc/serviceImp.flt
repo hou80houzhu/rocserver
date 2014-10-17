@@ -1,0 +1,47 @@
+package ${package}.serviceImp;
+
+import com.rocui.mvc.annotation.Dao;
+import com.rocui.mvc.annotation.Service;
+import com.rocui.mvc.annotation.Transation;
+import com.rocui.mvc.data.dao.MysqlDao;
+import com.rocui.mvc.data.dao.MysqlDao.PageInfo;
+import com.test.models.${tableName?cap_first};
+import com.test.service.${tableName?cap_first}Service;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+@Service(name = "${tableName}")
+public class ${tableName?cap_first}ServiceImp implements UserGroupService {
+
+    @Dao
+    private MysqlDao dao;
+
+    @Override
+    public ${tableName?cap_first} get${tableName?cap_first}(${tableName?cap_first} ${tableName}) throws Exception {
+        return this.dao.query(${tableName});
+    }
+    
+    @Override
+    @Transation
+    public ${tableName?cap_first} add${tableName?cap_first}(${tableName?cap_first} ${tableName}) throws Exception {
+        return this.dao.insert(${tableName});
+    }
+
+    @Override
+    @Transation
+    public void delete${tableName?cap_first}(${tableName?cap_first} ${tableName}) throws Exception {
+        this.dao.delete(${tableName});
+    }
+
+    @Override
+    @Transation
+    public void edit${tableName?cap_first}(${tableName?cap_first} ${tableName}) throws Exception {
+        this.dao.update(${tableName});
+    }
+
+    @Override
+    public PageInfo get${tableName?cap_first}Page(String sql, int from, int size, Object[] parlist) throws Exception{
+        return this.dao.queryPage(sql, from, size, parlist);
+    }
+}

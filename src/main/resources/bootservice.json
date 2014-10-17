@@ -1,0 +1,41 @@
+{
+    "services": [
+        {
+            "name": "mvc",
+            "className": "com.rocui.mvc.mapping.BaseMapping",
+            "codeHelper":{
+                "className":"com.rocui.CodeHelper.mvc.MVCImplementor",
+                "option":{
+                    "codePath":"F:\\java\\test\\src\\main\\java\\",
+                    "dataBaseName":"ftlcarrecoinfo"
+                }
+            },
+            "options": {
+                "exclude": "jpg,jpeg,png,gif.ico,otf,eot,svg,ttf,woff,js,css",
+                "jdbc": {
+                    "jdbcUrl": "jdbc:mysql://localhost/ftlcarrecoinfo?useUnicode=true&amp;characterEncoding=utf8",
+                    "driverClass": "com.mysql.jdbc.Driver",
+                    "username": "root",
+                    "password": "",
+                    "minPoolSize": "3",
+                    "maxPoolSize": "200"
+                },
+                "controller": "com.project.controller",
+                "model": "com.project.models",
+                "filter": "com.project.filter",
+                "service": "com.project.service",
+                "dao": "com.test.dao",
+                "view": {
+                    "jspxPath": "/views",
+                    "encoding": "utf-8",
+                    "locale": "zh_CN",
+                    "suffix": "html",
+                    "package":"com.project.views",
+                    "tagPakage": "com.project.views.tags",
+                    "methodPakage": "com.project.views.method",
+                    "providerPakage": "com.project.views.provider"
+                }
+            }
+        }
+    ]
+}

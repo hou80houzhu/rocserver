@@ -1,0 +1,42 @@
+package ${package};
+
+import com.rocui.mvc.annotation.Id;
+import com.rocui.mvc.annotation.Model;
+
+@Model(name = "${tableName}")
+public class ${tableName?cap_first} {
+    <#list fields as field>
+    <#if field.Key=="PRI">
+    @Id
+    </#if>
+    <#if field.Type?substring(0,3)=="int">
+    private int ${field.Field};
+    <#else>
+    private String ${field.Field};
+    </#if>
+    </#list>
+
+    <#list fields as field>
+    <#assign name1=field.Field?cap_first>
+    <#assign name2=field.Field>
+    <#if field.Type?substring(0,3)=="int">
+    public int get${name1}() {
+        return ${name2};
+    }
+
+    public void set${name1}(int ${name2}) {
+        this.${name2} = ${name2};
+    }
+    
+    <#else>
+    public String get${name1}() {
+        return ${name2};
+    }
+
+    public void set${name1}(String ${name2}) {
+        this.${name2} = ${name2};
+    }
+    
+    </#if>
+    </#list>
+}

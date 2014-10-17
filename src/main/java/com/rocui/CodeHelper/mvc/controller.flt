@@ -1,0 +1,69 @@
+package ${package};
+
+import com.rocui.mvc.annotation.Action;
+import com.rocui.mvc.annotation.Controller;
+import com.rocui.mvc.annotation.ControllerService;
+import com.rocui.mvc.controller.BaseController;
+import com.rocui.mvc.data.dao.MysqlDao.PageInfo;
+import com.rocui.mvc.view.View;
+import com.test.base.Result;
+import com.test.models.${tableName?cap_first};
+import com.test.service.${tableName?cap_first}Service;
+
+@Controller(basePath = "/${tableName}")
+public class ${tableName?cap_first}Controller extends BaseController {
+
+    <#list fields as field>
+    <#if field.Type?substring(0,3)=="int">
+    private int ${field.Field};
+    <#else>
+    private String ${field.Field};
+    </#if>
+    </#list>
+    private int from;
+    private int size;
+    
+    @ControllerService(name = "${tableName}")
+    private ${tableName?cap_first}Service service;
+
+    @Action(path = "/add${tableName}")
+    public View add${tableName?cap_first}() throws Exception {
+        ${tableName?cap_first} ${tableName} = new ${tableName?cap_first}();
+        <#list fields as field>
+        ${tableName}.set${field.Field?cap_first}(${field.Field});
+        </#list>
+        service.add${tableName?cap_first}(${tableName});
+        return Result.success();
+    }
+
+    @Action(path = "/delete${tableName}")
+    public View delete${tableName?cap_first}() throws Exception {
+        ${tableName?cap_first} group = new ${tableName?cap_first}();
+        ${tableName}.set${ids?cap_first}(${ids});
+        service.delete${tableName?cap_first}(${tableName});
+        return Result.success();
+    }
+
+    @Action(path = "/edit${tableName}")
+    public View edit${tableName?cap_first}() throws Exception {
+        ${tableName?cap_first} group = new ${tableName?cap_first}();
+        <#list fields as field>
+        ${tableName}.set${field.Field?cap_first}(${field.Field});
+        </#list>
+        service.edit${tableName?cap_first}(${tableName});
+        return Result.success();
+    }
+
+    @Action(path = "/get${tableName}Page")
+    public View get${tableName?cap_first}Page() throws Exception {
+        PageInfo info=service.get${tableName?cap_first}Page("sql", from, size,new Object[]{});
+        return Result.success(info);
+    }
+
+    @Action(path = "/ge${tableName}")
+    public View get${tableName?cap_first}() throws Exception {
+        ${tableName?cap_first} ${tableName} = new ${tableName?cap_first}();
+        ${tableName}.set${ids?cap_first}(${ids});
+        return Result.success(service.ge${tableName?cap_first}(${tableName}));
+    }
+}
