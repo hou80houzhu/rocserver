@@ -3,49 +3,49 @@ package com.rocui.util.http;
 import java.util.Date;
 import org.apache.http.impl.cookie.BasicClientCookie;
 
-public class Jcookie {
+public class Cookies {
 
     protected BasicClientCookie cookie;
 
-    private Jcookie(String key, String value) {
+    private Cookies(String key, String value) {
         this.cookie = new BasicClientCookie(key, value);
     }
 
-    public static Jcookie getCookie(String key, String value) {
-        return new Jcookie(key, value);
+    public static Cookies getCookie(String key, String value) {
+        return new Cookies(key, value);
     }
 
-    public Jcookie setComment() {
+    public Cookies setComment() {
         this.cookie.setComment(null);
         return this;
     }
 
-    public Jcookie setAttribute(String key, String value) {
+    public Cookies setAttribute(String key, String value) {
         this.cookie.setAttribute(key, value);
         return this;
     }
 
-    public Jcookie setDomain(String domain) {
+    public Cookies setDomain(String domain) {
         this.cookie.setDomain(domain);
         return this;
     }
 
-    public Jcookie setExpiryDate(Date date) {
+    public Cookies setExpiryDate(Date date) {
         this.cookie.setExpiryDate(date);
         return this;
     }
 
-    public Jcookie setSecure(boolean secure) {
+    public Cookies setSecure(boolean secure) {
         this.cookie.setSecure(secure);
         return this;
     }
 
-    public Jcookie setValue(String value) {
+    public Cookies setValue(String value) {
         this.cookie.setValue(value);
         return this;
     }
 
-    public Jcookie setVersion(int version) {
+    public Cookies setVersion(int version) {
         this.cookie.setVersion(version);
         return this;
     }
