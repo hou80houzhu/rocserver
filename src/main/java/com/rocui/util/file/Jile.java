@@ -395,6 +395,22 @@ public class Jile {
         }
     }
 
+    public void unzip(String name, String unzipDirectory) throws Exception {
+        if (this.file.isFile()) {
+            ZipFile zipFile = new ZipFile(this.file);
+            ZipEntry entry = null;
+            Enumeration zipEnum = zipFile.getEntries();
+            while (zipEnum.hasMoreElements()) {
+                entry = (ZipEntry) zipEnum.nextElement();
+                String entryName = entry.getName();
+                if (!entryName.endsWith("/")) {
+                    String path = unzipDirectory + File.separator + name + File.separator + entryName.substring(entryName.indexOf("/"));
+                    Jile.with(path).write(zipFile.getInputStream(entry));
+                }
+            }
+        }
+    }
+
     public void unzipCurrent() throws Exception {
         String p = this.file.getParentFile().getAbsolutePath();
         if (this.file.isFile()) {
@@ -406,6 +422,23 @@ public class Jile {
                 String entryName = entry.getName();
                 if (!entryName.endsWith("/")) {
                     String path = p + File.separator + entryName;
+                    Jile.with(path).write(zipFile.getInputStream(entry));
+                }
+            }
+        }
+    }
+
+    public void unzipCurrent(String name) throws Exception {
+        String p = this.file.getParentFile().getAbsolutePath();
+        if (this.file.isFile()) {
+            ZipFile zipFile = new ZipFile(this.file);
+            ZipEntry entry = null;
+            Enumeration zipEnum = zipFile.getEntries();
+            while (zipEnum.hasMoreElements()) {
+                entry = (ZipEntry) zipEnum.nextElement();
+                String entryName = entry.getName();
+                if (!entryName.endsWith("/")) {
+                    String path = p + File.separator + name + File.separator + entryName.substring(entryName.indexOf("/"));
                     Jile.with(path).write(zipFile.getInputStream(entry));
                 }
             }
