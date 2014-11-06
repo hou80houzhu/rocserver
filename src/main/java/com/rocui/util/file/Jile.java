@@ -10,9 +10,12 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.util.Enumeration;
 import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
+import org.apache.tools.zip.ZipFile;
 
 public class Jile {
 
@@ -24,12 +27,12 @@ public class Jile {
     }
 
     public static String classPath() {
-        return Jile.class.getClassLoader().getResource("").getFile()+File.separator;
+        return Jile.class.getClassLoader().getResource("").getFile() + File.separator;
     }
-    
-    public static String contextPath(){
-        File file=new File(Jile.classPath());
-        return file.getParentFile().getParentFile().getAbsolutePath()+File.separator;
+
+    public static String contextPath() {
+        File file = new File(Jile.classPath());
+        return file.getParentFile().getParentFile().getAbsolutePath() + File.separator;
     }
 
     public static Jile with(String path) {
@@ -148,6 +151,25 @@ public class Jile {
             OutputStreamWriter fout = new OutputStreamWriter(new FileOutputStream(this.file), encoding);
             fout.write(content);
             fout.close();
+        }
+        return this;
+    }
+
+    public synchronized Jile write(InputStream input) throws Exception {
+        if (this.file.exists()) {
+            if (this.file.isFile()) {
+                int readLen;
+                FileOutputStream output = new FileOutputStream(this.file);
+                byte[] buffer = new byte[1024 * 8];
+                while ((readLen = input.read(buffer, 0, 1024 * 8)) != -1) {
+                    output.write(buffer, 0, readLen);
+                }
+                input.close();
+                output.flush();
+                output.close();
+            }
+        } else {
+            this.createNewFile();
         }
         return this;
     }
@@ -338,6 +360,55 @@ public class Jile {
                 out.write(b);
             }
             in.close();
+        }
+    }
+
+    public String getSuffix() {
+        if (this.file.isFile()) {
+            return this.file.getName().substring(this.file.getName().lastIndexOf("."));
+        } else {
+            return null;
+        }
+    }
+
+    public String getNameWithoutSuffix() {
+        if (this.file.isFile()) {
+            return this.file.getName().substring(0, this.file.getName().lastIndexOf("."));
+        } else {
+            return null;
+        }
+    }
+
+    public void unzip(String unzipDirectory) throws Exception {
+        if (this.file.isFile()) {
+            ZipFile zipFile = new ZipFile(this.file);
+            ZipEntry entry = null;
+            Enumeration zipEnum = zipFile.getEntries();
+            while (zipEnum.hasMoreElements()) {
+                entry = (ZipEntry) zipEnum.nextElement();
+                String entryName = entry.getName();
+                if (!entryName.endsWith("/")) {
+                    String path = unzipDirectory + File.separator + entryName;
+                    Jile.with(path).write(zipFile.getInputStream(entry));
+                }
+            }
+        }
+    }
+
+    public void unzipCurrent() throws Exception {
+        String p = this.file.getParentFile().getAbsolutePath();
+        if (this.file.isFile()) {
+            ZipFile zipFile = new ZipFile(this.file);
+            ZipEntry entry = null;
+            Enumeration zipEnum = zipFile.getEntries();
+            while (zipEnum.hasMoreElements()) {
+                entry = (ZipEntry) zipEnum.nextElement();
+                String entryName = entry.getName();
+                if (!entryName.endsWith("/")) {
+                    String path = p + File.separator + entryName;
+                    Jile.with(path).write(zipFile.getInputStream(entry));
+                }
+            }
         }
     }
 
