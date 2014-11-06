@@ -16,6 +16,7 @@ import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.zip.ZipFile;
+import sun.io.ByteToCharBig5_Solaris;
 
 public class Jile {
 
@@ -170,8 +171,30 @@ public class Jile {
             }
         } else {
             this.createNewFile();
+            int readLen;
+            FileOutputStream output = new FileOutputStream(this.file);
+            byte[] buffer = new byte[1024 * 8];
+            while ((readLen = input.read(buffer, 0, 1024 * 8)) != -1) {
+                output.write(buffer, 0, readLen);
+            }
+            input.close();
+            output.flush();
+            output.close();
         }
         return this;
+    }
+
+    public OutputStream toOutputStream() throws Exception {
+        if (this.file.exists()) {
+            if (this.file.isFile()) {
+                return new FileOutputStream(file);
+            } else {
+                return null;
+            }
+        } else {
+            this.createNewFile();
+            return new FileOutputStream(file);
+        }
     }
 
     private synchronized void createNewFile() throws IOException {
@@ -313,7 +336,7 @@ public class Jile {
         return new Jile(new File(path));
     }
 
-    public void zip(String zipFileName) throws Exception {
+    public Jile zip(String zipFileName) throws Exception {
         File filex = new File(zipFileName);
         if (!filex.exists()) {
             if (!filex.getParentFile().exists()) {
@@ -342,6 +365,7 @@ public class Jile {
             bis.close();
             zos.close();
         }
+        return this;
     }
 
     private void zip(ZipOutputStream out, File f, String base) throws Exception {
@@ -379,7 +403,7 @@ public class Jile {
         }
     }
 
-    public void unzip(String unzipDirectory) throws Exception {
+    public Jile unzip(String unzipDirectory) throws Exception {
         if (this.file.isFile()) {
             ZipFile zipFile = new ZipFile(this.file);
             ZipEntry entry = null;
@@ -393,9 +417,10 @@ public class Jile {
                 }
             }
         }
+        return this;
     }
 
-    public void unzip(String name, String unzipDirectory) throws Exception {
+    public Jile unzip(String name, String unzipDirectory) throws Exception {
         if (this.file.isFile()) {
             ZipFile zipFile = new ZipFile(this.file);
             ZipEntry entry = null;
@@ -409,9 +434,10 @@ public class Jile {
                 }
             }
         }
+        return this;
     }
 
-    public void unzipCurrent() throws Exception {
+    public Jile unzipCurrent() throws Exception {
         String p = this.file.getParentFile().getAbsolutePath();
         if (this.file.isFile()) {
             ZipFile zipFile = new ZipFile(this.file);
@@ -426,9 +452,10 @@ public class Jile {
                 }
             }
         }
+        return this;
     }
 
-    public void unzipCurrent(String name) throws Exception {
+    public Jile unzipCurrent(String name) throws Exception {
         String p = this.file.getParentFile().getAbsolutePath();
         if (this.file.isFile()) {
             ZipFile zipFile = new ZipFile(this.file);
@@ -443,6 +470,7 @@ public class Jile {
                 }
             }
         }
+        return this;
     }
 
     private void delFolder(String folderPath) {
