@@ -164,9 +164,7 @@ public class Jile {
                     while ((ch = input.read()) != -1) {
                         output.write(ch);
                     }
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                } finally {
+                }finally {
                     output.close();
                     input.close();
                 }
@@ -179,9 +177,7 @@ public class Jile {
                 while ((ch = input.read()) != -1) {
                     output.write(ch);
                 }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } finally {
+            }finally {
                 output.close();
                 input.close();
             }
