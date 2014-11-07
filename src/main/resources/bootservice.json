@@ -3,13 +3,6 @@
         {
             "name": "mvc",
             "className": "com.rocui.mvc.mapping.BaseMapping",
-            "codeHelper":{
-                "className":"com.rocui.CodeHelper.mvc.MVCImplementor",
-                "option":{
-                    "codePath":"F:\\java\\test\\src\\main\\java\\",
-                    "dataBaseName":"ftlcarrecoinfo"
-                }
-            },
             "options": {
                 "exclude": "jpg,jpeg,png,gif.ico,otf,eot,svg,ttf,woff,js,css",
                 "jdbc": {
