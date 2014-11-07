@@ -16,7 +16,6 @@ import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.zip.ZipFile;
-import sun.io.ByteToCharBig5_Solaris;
 
 public class Jile {
 
@@ -159,27 +158,33 @@ public class Jile {
     public synchronized Jile write(InputStream input) throws Exception {
         if (this.file.exists()) {
             if (this.file.isFile()) {
-                int readLen;
                 FileOutputStream output = new FileOutputStream(this.file);
-                byte[] buffer = new byte[1024 * 8];
-                while ((readLen = input.read(buffer, 0, 1024 * 8)) != -1) {
-                    output.write(buffer, 0, readLen);
+                int ch = 0;
+                try {
+                    while ((ch = input.read()) != -1) {
+                        output.write(ch);
+                    }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } finally {
+                    output.close();
+                    input.close();
                 }
-                input.close();
-                output.flush();
-                output.close();
             }
         } else {
             this.createNewFile();
-            int readLen;
             FileOutputStream output = new FileOutputStream(this.file);
-            byte[] buffer = new byte[1024 * 8];
-            while ((readLen = input.read(buffer, 0, 1024 * 8)) != -1) {
-                output.write(buffer, 0, readLen);
+            int ch = 0;
+            try {
+                while ((ch = input.read()) != -1) {
+                    output.write(ch);
+                }
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            } finally {
+                output.close();
+                input.close();
             }
-            input.close();
-            output.flush();
-            output.close();
         }
         return this;
     }
