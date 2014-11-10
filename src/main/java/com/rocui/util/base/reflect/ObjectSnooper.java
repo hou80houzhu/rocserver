@@ -890,32 +890,40 @@ public class ObjectSnooper {
         }
     }
 
-    public Object trigger(String methodName, Object... args) throws Exception {
-        Object result = null;
-        Class<?> cla = this.object.getClass();
-        Method[] methods = cla.getDeclaredMethods();
-        for (Method method : methods) {
-            if (method.getName().equals(methodName)) {
-                Class<?>[] pars = method.getParameterTypes();
-                int length = 0;
-                if (args == null) {
-                    length = 1;
-                } else {
-                    length = args.length;
-                }
-                System.out.println("===" + pars.length + "----" + length);
-                if (pars.length == length) {
-                    try {
-                        method.setAccessible(true);
-                        result = method.invoke(object, args);
-                        break;
-                    } catch (Exception e) {
-                        throw e;
+    public Object trigger(Object... args) throws Exception {
+        if (null != args && args.length > 0) {
+            String methodName = args[0].toString();
+            Object result = null;
+            Class<?> cla = this.object.getClass();
+            Method[] methods = cla.getDeclaredMethods();
+            for (Method method : methods) {
+                if (method.getName().equals(methodName)) {
+                    Class<?>[] pars = method.getParameterTypes();
+                    int length = args.length - 1;
+                    System.out.println("===" + pars.length + "----" + length);
+                    if (pars.length == length) {
+                        try {
+                            method.setAccessible(true);
+                            if (args.length > 1) {
+                                Object[] c = new Object[args.length - 1];
+                                for (int i = 1; i < args.length; i++) {
+                                    c[i - 1] = args[i];
+                                }
+                                result = method.invoke(object, c);
+                            } else {
+                                result = method.invoke(object);
+                            }
+                            break;
+                        } catch (Exception e) {
+                            throw e;
+                        }
                     }
                 }
             }
+            return result;
+        } else {
+            return null;
         }
-        return result;
     }
 
     public Object triggerr(String methodName, Object... args) {
