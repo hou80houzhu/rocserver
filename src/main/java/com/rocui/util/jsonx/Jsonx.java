@@ -465,7 +465,7 @@ public class Jsonx {
     }
 
     public boolean isNull() {
-        return this.result == null;
+        return this.cache == null;
     }
 
     public Jsonx parent() {
