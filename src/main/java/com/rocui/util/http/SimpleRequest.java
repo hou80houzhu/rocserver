@@ -34,7 +34,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 
-public class Request {
+public class SimpleRequest {
 
     public final static String CHARSET_UTF8 = "UTF-8";
     public final static String CHARSET_GBK = "gbk";
@@ -52,17 +52,17 @@ public class Request {
 
     protected CookieStore cookieStore = new BasicCookieStore();
 
-    public Request appendText(String text) {
+    public SimpleRequest appendText(String text) {
         this.text = text;
         return this;
     }
 
-    public Request addText(String key, String text, ContentType contentType) {
+    public SimpleRequest addText(String key, String text, ContentType contentType) {
         this.texts.put(key, new xtext(text, contentType));
         return this;
     }
 
-    public Request addFile(String key, String path, ContentType contentType) {
+    public SimpleRequest addFile(String key, String path, ContentType contentType) {
         this.files.put(key, new xfile(new File(path), contentType));
         return this;
     }
@@ -94,8 +94,8 @@ public class Request {
         return entity;
     }
 
-    public static Request getRequest() {
-        Request request = new Request();
+    public static SimpleRequest getRequest() {
+        SimpleRequest request = new SimpleRequest();
         request.header.put("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
         request.header.put("accept-language", "zh-CN,zh;q=0.8,en;q=0.6,ja;q=0.4,fr;q=0.2");
         request.header.put("user-agent", "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.2; .NET4.0C; .NET4.0E)");
@@ -103,32 +103,32 @@ public class Request {
         return request;
     }
 
-    public Request setURL(String url) {
+    public SimpleRequest setURL(String url) {
         this.url = url;
         return this;
     }
 
-    public Request setPageCharset(String charset) {
+    public SimpleRequest setPageCharset(String charset) {
         this.pagecharset = charset;
         return this;
     }
 
-    public Request setCharset(String charset) {
+    public SimpleRequest setCharset(String charset) {
         this.charset = charset;
         return this;
     }
 
-    public Request addCookie(Cookies jcookie) {
+    public SimpleRequest addCookie(SimpleCookies jcookie) {
         this.cookies.add(jcookie.cookie);
         return this;
     }
 
-    public Request addCookie(Cookie cookie) {
+    public SimpleRequest addCookie(Cookie cookie) {
         this.cookies.add(cookie);
         return this;
     }
 
-    public Request addCookies(CookieStore store) {
+    public SimpleRequest addCookies(CookieStore store) {
         List<Cookie> list = store.getCookies();
         for (Cookie cookie : list) {
             this.cookies.add(cookie);
@@ -136,17 +136,17 @@ public class Request {
         return this;
     }
 
-    public Request addHeader(String key, String value) {
+    public SimpleRequest addHeader(String key, String value) {
         this.header.put(key, value);
         return this;
     }
 
-    public Request addParameter(String key, String value) {
+    public SimpleRequest addParameter(String key, String value) {
         this.parameters.put(key, value);
         return this;
     }
 
-    public void doGetSSL(Response responsex) throws Exception {
+    public void doGetSSL(SimpleResponse responsex) throws Exception {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         try {
@@ -166,7 +166,7 @@ public class Request {
         }
     }
 
-    public void doPostSSL(Response responsex) throws Exception {
+    public void doPostSSL(SimpleResponse responsex) throws Exception {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         try {
@@ -188,7 +188,7 @@ public class Request {
         }
     }
 
-    public void doPost(Response responsex) throws Exception {
+    public void doPost(SimpleResponse responsex) throws Exception {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         try {
@@ -268,7 +268,7 @@ public class Request {
         return httpost;
     }
 
-    private void setResponse(HttpClientContext context, CloseableHttpResponse response, Response jresponsex) throws Exception {
+    private void setResponse(HttpClientContext context, CloseableHttpResponse response, SimpleResponse jresponsex) throws Exception {
         jresponsex.charset = this.charset;
         jresponsex.hreader = this.getHeader(response);
         jresponsex.status = response.getStatusLine().getStatusCode();
@@ -293,7 +293,7 @@ public class Request {
         }
     }
 
-    public void doGet(Response responsex) throws Exception {
+    public void doGet(SimpleResponse responsex) throws Exception {
         CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
         try {
@@ -313,8 +313,8 @@ public class Request {
         }
     }
 
-    private Request cloneRequest() {
-        Request request = new Request();
+    private SimpleRequest cloneRequest() {
+        SimpleRequest request = new SimpleRequest();
         request.charset = this.charset;
         request.header = this.header;
         request.parameters = this.parameters;

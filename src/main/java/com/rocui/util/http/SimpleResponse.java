@@ -10,7 +10,7 @@ import org.apache.http.client.CookieStore;
 import org.apache.http.cookie.CookieOrigin;
 import org.apache.http.util.EntityUtils;
 
-public abstract class Response {
+public abstract class SimpleResponse {
 
     protected int status;
     protected String charset = "utf8";
@@ -22,7 +22,7 @@ public abstract class Response {
 
     protected Object[] arguments;
 
-    public Response(Object... args) {
+    public SimpleResponse(Object... args) {
         this.arguments = args;
     }
 
