@@ -20,6 +20,12 @@ public abstract class Response {
     protected CookieStore cookieStore;
     protected CookieOrigin cookieOrigin;
 
+    protected Object[] arguments;
+
+    public Response(Object... args) {
+        this.arguments = args;
+    }
+
     public String getContentString() {
         try {
             return EntityUtils.toString(entity, this.charset);
