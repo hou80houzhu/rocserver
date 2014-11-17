@@ -13,6 +13,10 @@ public class BaseController {
     protected HttpServletRequest request;
     protected HttpServletResponse response;
 
+    protected String basePath() {
+        return request.getSession().getServletContext().getRealPath("/");
+    }
+
     protected JsonView getJsonView(Object obj) {
         return new JsonView(obj);
     }
