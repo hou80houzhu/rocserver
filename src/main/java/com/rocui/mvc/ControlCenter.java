@@ -153,7 +153,13 @@ public class ControlCenter implements Filter {
                     } else {
                         if (item.getName() != null && !item.getName().equals("")) {
                             File tempFile = new File(item.getName());
-                            File file = new File("D:\\temp", tempFile.getName());
+                            String basepath=request.getSession().getServletContext().getRealPath("/");
+                            File file = new File(basepath+File.separator+"__temp__", tempFile.getName());
+                            if(!file.exists()){
+                                if(!file.getParentFile().exists()){
+                                    file.getParentFile().mkdirs();
+                                }
+                            }
                             item.write(file);
                             hasmap.put(item.getFieldName(), file);
                             files.add(file);
