@@ -1,0 +1,6 @@
+router 重写，使之可拓展
+service注入
+parameters注入
+response提供必要的简略方法
+
+全局缓存
