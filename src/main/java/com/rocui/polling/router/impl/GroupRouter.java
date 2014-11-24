@@ -8,6 +8,6 @@ public class GroupRouter extends BaseRouter {
 
     @Override
     public void rout(PollingConnect connect, MessageWrapper wrapper) throws Exception {
-            connect.getConnectManager().postGroupMessage(wrapper.getTo(), wrapper.getMessage());
+        connect.getConnectManager().postGroupMessage(wrapper.getTo(), wrapper.getMessage());
     }
 }

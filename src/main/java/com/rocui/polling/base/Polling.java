@@ -109,12 +109,11 @@ public class Polling {
                     rout(cot, pollingresponse);
                     back(response, "{\"code\":\"1\"}");
                 } else {
-                    back(response, "{\"code\":\"1\"，\"callback\":\"tohandshake\"}");
+                    back(response, "{\"code\":\"1\",\"callback\":\"tohandshake\"}");
                 }
                 break;
             default:
                 String content = request.getParameter("content");
-                System.out.println("======>>"+content);
                 cot = manager.get(connectId);
                 if (null != cot) {
                     PollingRequest pollingrequest = new PollingRequest(serviceName, content, cot);
@@ -126,14 +125,13 @@ public class Polling {
                     }
                     back(response, "{\"code\":\"1\"}");
                 } else {
-                    back(response, "{\"code\":\"1\"，\"callback\":\"tohandshake\"}");
+                    back(response, "{\"code\":\"1\",\"callback\":\"tohandshake\"}");
                 }
                 break;
         }
     }
 
     private void back(HttpServletResponse response, PollingMessage message) throws IOException {
-        System.out.println("===<<<"+Jsonx.create(message).toString());
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(Jsonx.create(message).toString());
         response.getWriter().close();
@@ -153,6 +151,13 @@ public class Polling {
             if (null != router) {
                 router.rout(connect, carrier);
             }
+        }
+    }
+
+    public static void post(PollingResponse response) throws Exception {
+        PollingConnect connect = ConnectManager.getManager().getFirstConnect();
+        if (null != connect) {
+            Polling.getPolling().rout(connect, response);
         }
     }
 

@@ -132,6 +132,15 @@ public class ConnectManager {
         return list;
     }
 
+    public PollingConnect getFirstConnect() {
+        PollingConnect connect = null;
+        for (Entry<String, PollingConnect> polls : this.mapping.entrySet()) {
+            connect = polls.getValue();
+            break;
+        }
+        return connect;
+    }
+
     public List<PollingConnect> getGroupsOnline() {
         List<PollingConnect> list = new ArrayList<>();
         HashMap<String, String> map = new HashMap<>();
@@ -173,7 +182,7 @@ public class ConnectManager {
         }
         return list;
     }
-    
+
     public void connectEach(ConnectEach each) {
         int i = 0;
         for (Entry<String, PollingConnect> polls : this.mapping.entrySet()) {
